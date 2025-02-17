@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Authentication - EduTech LMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Main Card -->
+        <div class="w-full max-w-lg bg-white rounded-xl shadow-xl">
+            <!-- Card Header -->
+            <div class="p-6 space-y-1 border-b border-gray-100">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-school text-purple-600 text-xl"></i>
+                    <span class="text-xl font-semibold text-purple-600">EduTech LMS</span>
+                </div>
+                <h2 class="text-2xl font-semibold">Welcome, Instructor!</h2>
+                <p class="text-sm text-gray-500">Manage your courses and connect with students</p>
+            </div>
+
+            <!-- Card Content -->
+            <div class="p-6">
+                <!-- Tabs -->
+                <div class="w-full grid grid-cols-2 gap-2 bg-gray-100 p-1 rounded-lg mb-8">
+                    <button onclick="switchTab('login')" id="loginTab" 
+                            class="py-2 px-4 rounded-md font-medium text-sm bg-white shadow text-gray-900">Login</button>
+                    <button onclick="switchTab('signup')" id="signupTab" 
+                            class="py-2 px-4 rounded-md font-medium text-sm text-gray-600">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input type="email" placeholder="Enter your email" 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input type="password" placeholder="Enter your password" 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sign Up Form -->
+                <div id="signupForm" class="space-y-4 hidden">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">First Name</label>
+                            <div class="relative">
+                                <i class="fas fa-user absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input type="text" placeholder="John" 
+                                       class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Last Name</label>
+                            <div class="relative">
+                                <i class="fas fa-user absolute left-3 top-3 text-gray-400 text-sm"></i>
+                                <input type="text" placeholder="Doe" 
+                                       class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Institute Name</label>
+                        <div class="relative">
+                            <i class="fas fa-building absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input type="text" placeholder="Enter institute name" 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input type="email" placeholder="Enter your email" 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Phone Number</label>
+                        <div class="relative">
+                            <i class="fas fa-phone absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input type="tel" placeholder="Enter phone number" 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-3 text-gray-400 text-sm"></i>
+                            <input type="password" placeholder="Create a password" 
+                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-purple-600">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="p-6 border-t border-gray-100">
+                <button id="actionButton" 
+                        class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2">
+                    <span id="buttonText">Login</span>
+                    <i class="fas fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const buttonText = document.getElementById('buttonText');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                loginTab.classList.add('bg-white', 'shadow', 'text-gray-900');
+                loginTab.classList.remove('text-gray-600');
+                signupTab.classList.remove('bg-white', 'shadow', 'text-gray-900');
+                signupTab.classList.add('text-gray-600');
+                buttonText.textContent = 'Login';
+            } else {
+                loginForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                signupTab.classList.add('bg-white', 'shadow', 'text-gray-900');
+                signupTab.classList.remove('text-gray-600');
+                loginTab.classList.remove('bg-white', 'shadow', 'text-gray-900');
+                loginTab.classList.add('text-gray-600');
+                buttonText.textContent = 'Create Account';
+            }
+        }
+    </script>
+</body>
+</html>
