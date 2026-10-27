@@ -13,7 +13,7 @@ CourseCloud is a Django learning platform where students can explore courses, ma
 
 ## Screenshots
 
-Screenshots use fictional demo accounts and sample courses.
+The screenshots below show the current minimal green interface on desktop and mobile. They use fictional demo accounts and sample courses.
 
 ### Explore courses
 ![Course catalogue](docs/screenshots/courses.png)
@@ -29,6 +29,16 @@ Screenshots use fictional demo accounts and sample courses.
 
 ### Profile and account menu
 ![Profile settings and account menu](docs/screenshots/profile.png)
+
+### Mobile previews
+
+| Course catalogue | Course details |
+| --- | --- |
+| ![Mobile course catalogue](docs/screenshots/courses-mobile.png) | ![Mobile course details](docs/screenshots/course-details-mobile.png) |
+
+| Shopping cart | Checkout | Profile |
+| --- | --- | --- |
+| ![Mobile shopping cart](docs/screenshots/shopping-cart-mobile.png) | ![Mobile checkout](docs/screenshots/checkout-mobile.png) | ![Mobile profile](docs/screenshots/profile-mobile.png) |
 
 ## Run locally
 
