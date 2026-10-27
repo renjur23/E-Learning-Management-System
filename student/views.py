@@ -171,7 +171,7 @@ class CheckOutView(View):
                 'name': 'CourseCloud', 'description': 'Course enrolment', 'order_id': payment['id'],
                 'callback_url': request.build_absolute_uri(reverse('payment_verify')),
                 'prefill': {'name': request.user.get_full_name(), 'email': request.user.email},
-                'theme': {'color': '#7025d5'}}
+                'theme': {'color': '#24634e'}}
             return render(request, 'payment.html', {'payment_options': options, 'total': total, 'courses': courses})
         messages.success(request, 'You are enrolled. Your course is ready to open.')
         return redirect('mycourses')
