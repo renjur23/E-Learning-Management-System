@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -163,8 +163,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': config('client_id'),
-            'secret':  config('secret'),
+            'client_id': config('client_id', default=''),
+            'secret':  config('secret', default=''),
        
         }
     }
@@ -172,8 +172,12 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID=1
 
-LOGIN_URL=""
+LOGIN_URL="signin"
 
 LOGIN_REDIRECT_URL="index"
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+STATIC_ROOT = BASE_DIR / "staticfiles"

@@ -1,34 +1,28 @@
-
-
 from django import forms
-
-
+from django.contrib.auth.forms import UserCreationForm
 from instructor.models import User
 
-from django.contrib.auth.forms import UserCreationForm
-
-
 class StudentCreateForm(UserCreationForm):
-
     class Meta:
-
-        model=User
-
-        fields=["username","password1","password2","email"]
-
+        model = User
+        fields = ["username", "email", "password1", "password2"]
 
 class LoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={"autocomplete": "username"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}))
 
-    username=forms.CharField()
-
-    password=forms.CharField()
-    
 class ContactForm(forms.Form):
-    
-    Name=forms.CharField()
-    
-    Email=forms.EmailField()
-    
-    Message=forms.Textarea()
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
 
-    
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'autocomplete': 'given-name'}),
+            'last_name': forms.TextInput(attrs={'autocomplete': 'family-name'}),
+            'email': forms.EmailInput(attrs={'autocomplete': 'email'}),
+        }

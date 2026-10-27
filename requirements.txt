@@ -13,3 +13,5 @@ setuptools==75.8.0
 sqlparse==0.5.3
 tzdata==2025.1
 urllib3==2.3.0
+
+django-allauth[socialaccount]==65.3.1

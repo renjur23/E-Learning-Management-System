@@ -1,126 +1,28 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 {% load embed_video_tags %}
-
-{%block main_block%}
-
-
-
-    <!-- Course Content -->
-    <div class="pt-20">
-        <!-- Video Preview Section -->
-        <div class="bg-gray-900 w-full">
-            <div class="max-w-screen-xl mx-auto px-4 py-8">
-                <div class="aspect-w-16 aspect-h-9">
-
-                    <div class="mx-auto">
-                        {%video course.thumbnail as course_video %}
-    
-                            {%video course_video 'large'%}
-    
-    
-    
-                        {%endvideo%}
-                    </div>
-                    
-                    <!-- <img src="/api/placeholder/1200/675" alt="Course Preview" class="w-full max-h-[600px] object-cover"> -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Course Info and Modules -->
-        <div class="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Course Information -->
-            <div class="lg:col-span-2">
-                <h1 class="text-3xl font-bold mb-4">{{course.title}}</h1>
-                <div class="flex items-center mb-4 text-gray-600">
-                    <span class="mr-4"><i class="fas fa-user mr-2"></i>{{course.owner}}</span>
-                    <span class="mr-4"><i class="fas fa-clock mr-2"></i>20 hours</span>
-                    <span><i class="fas fa-users mr-2"></i>1,234 students</span>
-                </div>
-                <p class="text-gray-700 mb-6">{{course.description}}</p>
-                
-                <!-- Course Content Modules -->
-                <div class="space-y-4">
-                    <h2 class="text-2xl font-bold mb-4">Course Content</h2>
-                    
-                    <!-- Module 1 -->
-                   {%for module in course.modules.all%}
-                   <div class="border rounded-lg overflow-hidden">
-                    <button class="w-full px-6 py-4 bg-purple-50 hover:bg-purple-100 flex items-center justify-between" onclick="toggleModule('module{{forloop.counter}}')">
-                        <div class="flex items-center">
-                            <i class="fas fa-chevron-down mr-4 text-purple-600"></i>
-                            <span class="font-semibold">Module {{forloop.counter}}: {{module.title}}</span>
-                        </div>
-                        <span class="text-gray-600">{{module.lessons.all.count}} lessons • 45 min</span>
-                    </button>
-                    <div id="module{{forloop.counter}}" class="hidden">
-                        <div class="p-4 space-y-2">
-                            {%for l in module.lessons.all%}
-                            <div class="flex items-center p-2 hover:bg-gray-50 rounded">
-                                <i class="fas fa-play-circle text-purple-600 mr-4"></i>
-                                <span>{{forloop.counter}} {{l.title}}</span>
-                                <span class="ml-auto text-gray-600">15 min</span>
-                            </div>
-                            {%endfor%}
-                           
-                        </div>
-                    </div>
-                </div>
-                   {%endfor%}
-
-                </div>
-            </div>
-
-            <!-- Course Sidebar -->
-            <div class="lg:col-span-1">
-                <div class="bg-white p-6 rounded-lg shadow-lg sticky top-24">
-                    <div class="text-3xl font-bold mb-4 text-purple-700">${{course.price}}</div>
-                   <a href="{%url 'add-to-cart' course.id%}">
-                        <button class="w-full bg-purple-600 text-white py-3 rounded-lg mb-4 hover:bg-purple-700 transition duration-300">
-                            Enroll Now
-                        </button>
-                   </a>
-                    <button class="w-full border border-purple-600 text-purple-600 py-3 rounded-lg mb-6 hover:bg-purple-50 transition duration-300">
-                        Add to Wishlist
-                    </button>
-                    <div class="space-y-4">
-                        <h3 class="font-bold text-lg">This course includes:</h3>
-                        <div class="flex items-center">
-                            <i class="fas fa-video mr-3 text-gray-600"></i>
-                            <span>20 hours of video content</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-file-alt mr-3 text-gray-600"></i>
-                            <span>15 coding exercises</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-trophy mr-3 text-gray-600"></i>
-                            <span>Certificate of completion</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-infinity mr-3 text-gray-600"></i>
-                            <span>Lifetime access</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function toggleModule(moduleId) {
-            const module = document.getElementById(moduleId);
-            const isHidden = module.classList.contains('hidden');
-            const allModules = document.querySelectorAll('[id^="module"]');
-            
-            // Close all modules
-            allModules.forEach(mod => mod.classList.add('hidden'));
-            
-            // Open clicked module if it was closed
-            if (isHidden) {
-                module.classList.remove('hidden');
-            }
-        }
-    </script>
-
-{%endblock%}
+{% block title %}{{ course.title }} &middot; CourseCloud{% endblock %}
+{% block main_class %}course-page{% endblock %}
+{% block main_block %}
+<div class="course-layout">
+<header class="course-hero">
+<nav class="course-breadcrumb" aria-label="Breadcrumb"><a href="{% url 'index' %}">Explore courses</a><span aria-hidden="true">&rsaquo;</span>{% for category in course.category_objects.all %}<span>{{ category.name }}</span>{% if not forloop.last %}<span aria-hidden="true">&middot;</span>{% endif %}{% empty %}<span>Online learning</span>{% endfor %}</nav>
+<h1>{{ course.title }}</h1>
+<p class="course-subtitle">{{ course.description|striptags|truncatewords:35 }}</p>
+<div class="course-highlights"><span class="course-tag">Learn at your pace</span><span>{{ course.modules.count }} module{{ course.modules.count|pluralize }}</span><span>{{ lesson_count }} lesson{{ lesson_count|pluralize }}</span></div>
+<p class="course-creator">Created by <span>{{ course.owner.get_full_name|default:course.owner.username|default:'CourseCloud instructor' }}</span></p>
+<div class="course-meta"><span><span aria-hidden="true">&#9638;</span> Last updated {{ course.updated_at|date:'n/Y' }}</span><span><span aria-hidden="true">&#9678;</span> Online course</span></div>
+</header>
+<aside class="course-enrolment" aria-label="Course enrolment">
+{% if course.thumbnail %}<details class="course-preview"><summary>{% if course.picture %}<img src="{{ course.picture.url }}" alt="" class="preview-image">{% else %}<span class="preview-art" aria-hidden="true">{{ course.title|first|upper }}</span>{% endif %}<span class="preview-shade"></span><span class="preview-play" aria-hidden="true">&#9654;</span><span class="preview-label">Preview this course</span></summary><div class="video">{% video course.thumbnail 'medium' %}</div></details>
+{% elif course.picture %}<img class="course-cover-image" src="{{ course.picture.url }}" alt="{{ course.title }}">{% else %}<div class="course-cover-fallback"><span aria-hidden="true">{{ course.title|first|upper }}</span><strong>Start something new.</strong></div>{% endif %}
+<div class="enrolment-body"><p class="enrolment-price">{% if course.price == 0 %}Free{% else %}&#8377;{{ course.price }}{% endif %}</p>
+{% if enrolled %}<a class="button enrol-button" href="{% url 'lesson-detail' course.id %}">Continue learning</a>{% elif in_cart %}<a class="button enrol-button" href="{% url 'cart-summary' %}">Go to cart</a>{% else %}<form method="post" action="{% url 'add-to-cart' course.id %}">{% csrf_token %}<button class="enrol-button" type="submit">{% if course.price == 0 %}Enrol for free{% else %}Enrol now{% endif %}</button></form>{% endif %}
+<p class="enrolment-note">{% if enrolled %}You're enrolled in this course.{% elif in_cart %}This course is in your cart.{% else %}Continue to your cart to complete enrolment.{% endif %}</p>
+<h2>This course includes:</h2><ul class="course-includes"><li><span aria-hidden="true">&#9655;</span>{{ lesson_count }} lesson{{ lesson_count|pluralize }}</li><li><span aria-hidden="true">&#9776;</span>{{ course.modules.count }} learning module{{ course.modules.count|pluralize }}</li><li><span aria-hidden="true">&#9719;</span>Learn at your own pace</li><li><span aria-hidden="true">&#9635;</span>Access on desktop and mobile</li></ul>
+</div></aside>
+<div class="course-content-column">
+{% if learning_topics %}<section class="learning-outcomes"><h2>What you'll learn</h2><ul>{% for module in learning_topics %}<li><span aria-hidden="true">&#10003;</span><span>{{ module.title }}</span></li>{% endfor %}</ul></section>{% endif %}
+<section class="course-description"><h2>About this course</h2>{{ course.description|linebreaks }}</section>
+<section class="course-curriculum"><div class="row"><h2>Course content</h2>{% if user.role == 'instructor' and course.owner_id == user.id %}<a class="button secondary" href="{% url 'module-create' course.id %}">Add module</a>{% endif %}</div><p class="muted">{{ course.modules.count }} module{{ course.modules.count|pluralize }} &middot; {{ lesson_count }} lesson{{ lesson_count|pluralize }}</p><div class="curriculum-box">{% include 'curriculum.html' %}</div></section>
+</div></div>
+{% endblock %}
