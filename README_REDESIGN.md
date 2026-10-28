@@ -1,4 +1,4 @@
-# CourseCloud redesign
+# LearnOrbit redesign
 
 ## Run locally
 
@@ -8,7 +8,7 @@ Python 3.10+ recommended. Create and activate a virtual environment, then:
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env`, set a unique SECRET_KEY, and keep DEBUG=True only for local development. On Windows use `copy .env.example .env`; on macOS/Linux use `cp .env.example .env`.
+Copy `.env.example` to `.env`, set a unique SECRET_KEY, and keep LEARNORBIT_DEBUG=True only for local development. On Windows use `copy .env.example .env`; on macOS/Linux use `cp .env.example .env`.
 
 ```bash
 python manage.py migrate
@@ -50,7 +50,7 @@ No JavaScript build or lint configuration existed. Browser visual checks could n
 
 ## Deployment
 
-Use a currently supported, security-patched dependency set after compatibility testing; the original pinned Django stack is retained here. Set DEBUG=False, configure ALLOWED_HOSTS, serve collected static files and uploaded media with your web server, and use real secrets. Payment confirmation checks the provider capture status and amount. Signed webhooks reconcile payments when the browser callback is missed.
+Use a currently supported, security-patched dependency set after compatibility testing; the original pinned Django stack is retained here. Set LEARNORBIT_DEBUG=False, configure ALLOWED_HOSTS, serve collected static files and uploaded media with your web server, and use real secrets. Payment confirmation checks the provider capture status and amount. Signed webhooks reconcile payments when the browser callback is missed.
 
 
 ## Razorpay setup
@@ -64,4 +64,12 @@ Use a currently supported, security-patched dependency set after compatibility t
 
 Integration reference: https://razorpay.com/docs/server-integration/python/test-app/
 
-Local demo checkout: set PAYMENT_DEMO=True and DEBUG=True in .env. Checkout then offers Complete demo payment, which creates a paid enrolment without contacting Razorpay or charging money. Disable PAYMENT_DEMO to restore real Razorpay checkout. Demo mode is disabled when DEBUG=False.
+Local demo checkout: set PAYMENT_DEMO=True and LEARNORBIT_DEBUG=True in .env. Checkout then offers Complete demo payment, which creates a paid enrolment without contacting Razorpay or charging money. Disable PAYMENT_DEMO to restore real Razorpay checkout. Demo mode is disabled when LEARNORBIT_DEBUG=False.
+
+## Learning studio visual refresh
+
+The interface now uses midnight blue (#172b40), warm paper (#f5f2eb), coral (#ad3e2d) and peach (#ffb59b), with local system fonts and Georgia editorial headings. The catalogue has an original orbital studio illustration, rounded course cards and a dedicated search panel. Course details use a full-width introduction, a left enrolment panel and a separate content workspace. Cart, checkout, account and authentication surfaces share the new palette.
+
+CSS includes entrance, floating illustration and hover animations. The reduced-motion preference disables animations, transitions and smooth scrolling. Existing routes, forms, permissions and payment logic are retained.
+
+Validation: Django system check and all 37 workflow tests pass. The project-specific LEARNORBIT_DEBUG setting avoids conflicts with a host DEBUG=release value. The isolated screenshot fixture captures five pages at desktop and mobile sizes, checks overflow at 320px and 390px, and checks account-menu opening and Escape dismissal. Updated previews are in docs/screenshots. The fixture uses fictional data and a separate temporary database.

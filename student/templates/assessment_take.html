@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}{{ assessment.title }} · LearnOrbit{% endblock %}{% block main_block %}
+<div class="row assessment-header"><div><span class="eyebrow">{{ assessment.get_kind_display }} · {{ course.title }}</span><h1>{{ assessment.title }}</h1></div><div class="test-timer" role="timer" aria-label="Time remaining" data-test-deadline="{{ test_deadline }}" data-server-now="{{ server_now }}"><span>Time remaining</span><strong id="test-countdown">{{ countdown }}</strong></div></div>
+<p class="muted">Choose one answer per question. Submit before the timer ends. Unanswered questions score zero. Answers are saved on submission; keep this page open.</p>
+<form method="post" id="assessment-form">{% csrf_token %}{% for q in questions %}<fieldset class="panel question-panel"><legend>{{ forloop.counter }}. {{ q.prompt }}</legend>{% for key,label in q.choices %}<label class="answer-choice"><input type="radio" name="question_{{ q.id }}" value="{{ key }}"><span>{{ label }}</span></label>{% endfor %}</fieldset>{% endfor %}<button type="submit">Submit answers</button></form>
+{% endblock %}

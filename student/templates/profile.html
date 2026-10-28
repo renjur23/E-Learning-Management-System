@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Your profile &middot; CourseCloud{% endblock %}
+{% block title %}Your profile &middot; LearnOrbit{% endblock %}
 {% block main_block %}
 <div class="account-layout">
 <aside class="account-sidebar panel"><span class="avatar avatar-large">{{ profile_initials }}</span><h2>{{ user.get_full_name|default:user.username }}</h2><p class="muted">{{ user.email }}</p><nav aria-label="Account navigation"><a href="{% url 'profile' %}" aria-current="page">Edit profile</a><a href="{% url 'purchase-history' %}">Purchase history</a><a href="{% url 'mycourses' %}">My learning</a></nav></aside>

@@ -3,8 +3,14 @@
 from django.urls import path
 
 from student import views
+from student.assessments import CourseAssessmentsView, AssessmentView, MockTestsView
+from student.course_notes import CourseNotesView
 
 urlpatterns=[
+    path('mock-tests/', MockTestsView.as_view(), name='mock-tests'),
+    path('courses/<int:pk>/notes.pdf', CourseNotesView.as_view(), name='course-notes'),
+    path('courses/<int:pk>/assessments/', CourseAssessmentsView.as_view(), name='course-assessments'),
+    path('assessments/<int:pk>/', AssessmentView.as_view(), name='assessment'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('purchases/', views.PurchaseHistoryView.as_view(), name='purchase-history'),
 

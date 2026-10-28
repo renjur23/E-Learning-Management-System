@@ -9,7 +9,7 @@ from decouple import config
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.db import transaction
 from django.db.models import Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
@@ -168,7 +168,7 @@ class CheckOutView(View):
                 request.user.basket.filter(pk__in=[c.pk for c in carts]).delete()
         if payment:
             options = {'key': RZP_KEY_ID, 'amount': int(total * 100), 'currency': 'INR',
-                'name': 'CourseCloud', 'description': 'Course enrolment', 'order_id': payment['id'],
+                'name': 'LearnOrbit', 'description': 'Course enrolment', 'order_id': payment['id'],
                 'callback_url': request.build_absolute_uri(reverse('payment_verify')),
                 'prefill': {'name': request.user.get_full_name(), 'email': request.user.email},
                 'theme': {'color': '#24634e'}}
@@ -190,12 +190,17 @@ class LessonDetailView(View):
             messages.info(request, 'Enrol in this course to access its lessons.')
             return redirect('course-detail', pk=pk)
         modules = course.modules.order_by('order', 'pk')
-        module = get_object_or_404(modules, pk=request.GET['module']) if request.GET.get('module') else modules.first()
+        try:
+            module_id = int(request.GET['module']) if request.GET.get('module') else None
+            lesson_id = int(request.GET['lesson']) if request.GET.get('lesson') else None
+        except (ValueError, TypeError):
+            raise Http404('Invalid lesson selection.')
+        module = get_object_or_404(modules, pk=module_id) if module_id is not None else modules.first()
         lesson = None
         if module:
             lessons = module.lessons.order_by('order', 'pk')
-            lesson = get_object_or_404(lessons, pk=request.GET['lesson']) if request.GET.get('lesson') else lessons.first()
-        return render(request, 'lesson_detail.html', {'course': course, 'lesson': lesson})
+            lesson = get_object_or_404(lessons, pk=lesson_id) if lesson_id is not None else lessons.first()
+        return render(request, 'lesson_detail.html', {'course': course, 'lesson': lesson, 'selected_module': module})
 
 @method_decorator(csrf_exempt, name='dispatch')
 class PaymentVerificationView(View):

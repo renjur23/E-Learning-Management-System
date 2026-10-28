@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load embed_video_tags %}
-{% block title %}{{ course.title }} &middot; CourseCloud{% endblock %}
+{% block title %}{{ course.title }} &middot; LearnOrbit{% endblock %}
 {% block main_class %}course-page{% endblock %}
 {% block main_block %}
 <div class="course-layout">
@@ -9,7 +9,7 @@
 <h1>{{ course.title }}</h1>
 <p class="course-subtitle">{{ course.description|striptags|truncatewords:35 }}</p>
 <div class="course-highlights"><span class="course-tag">Learn at your pace</span><span>{{ course.modules.count }} module{{ course.modules.count|pluralize }}</span><span>{{ lesson_count }} lesson{{ lesson_count|pluralize }}</span></div>
-<p class="course-creator">Created by <span>{{ course.owner.get_full_name|default:course.owner.username|default:'CourseCloud instructor' }}</span></p>
+<p class="course-creator">Created by <span>{% if course.owner %}{{ course.owner.get_full_name|default:course.owner.username }}{% else %}LearnOrbit{% endif %}</span></p>
 <div class="course-meta"><span><span aria-hidden="true">&#9638;</span> Last updated {{ course.updated_at|date:'n/Y' }}</span><span><span aria-hidden="true">&#9678;</span> Online course</span></div>
 </header>
 <aside class="course-enrolment" aria-label="Course enrolment">
@@ -18,7 +18,7 @@
 <div class="enrolment-body"><p class="enrolment-price">{% if course.price == 0 %}Free{% else %}&#8377;{{ course.price }}{% endif %}</p>
 {% if enrolled %}<a class="button enrol-button" href="{% url 'lesson-detail' course.id %}">Continue learning</a>{% elif in_cart %}<a class="button enrol-button" href="{% url 'cart-summary' %}">Go to cart</a>{% else %}<form method="post" action="{% url 'add-to-cart' course.id %}">{% csrf_token %}<button class="enrol-button" type="submit">{% if course.price == 0 %}Enrol for free{% else %}Enrol now{% endif %}</button></form>{% endif %}
 <p class="enrolment-note">{% if enrolled %}You're enrolled in this course.{% elif in_cart %}This course is in your cart.{% else %}Continue to your cart to complete enrolment.{% endif %}</p>
-<h2>This course includes:</h2><ul class="course-includes"><li><span aria-hidden="true">&#9655;</span>{{ lesson_count }} lesson{{ lesson_count|pluralize }}</li><li><span aria-hidden="true">&#9776;</span>{{ course.modules.count }} learning module{{ course.modules.count|pluralize }}</li><li><span aria-hidden="true">&#9719;</span>Learn at your own pace</li><li><span aria-hidden="true">&#9635;</span>Access on desktop and mobile</li></ul>
+{% if enrolled %}<p><a class="button secondary" href="{% url 'course-notes' course.pk %}">Download PDF notes &darr;</a></p>{% endif %}<h2>This course includes:</h2><ul class="course-includes"><li><span aria-hidden="true">&#9655;</span>{{ lesson_count }} lesson{{ lesson_count|pluralize }}</li><li><span aria-hidden="true">&#9776;</span>{{ course.modules.count }} learning module{{ course.modules.count|pluralize }}</li><li><span aria-hidden="true">&#9719;</span>Learn at your own pace</li><li><span aria-hidden="true">&#9635;</span>Access on desktop and mobile</li></ul>
 </div></aside>
 <div class="course-content-column">
 {% if learning_topics %}<section class="learning-outcomes"><h2>What you'll learn</h2><ul>{% for module in learning_topics %}<li><span aria-hidden="true">&#10003;</span><span>{{ module.title }}</span></li>{% endfor %}</ul></section>{% endif %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Purchase history &middot; CourseCloud{% endblock %}
+{% block title %}Purchase history &middot; LearnOrbit{% endblock %}
 {% block main_block %}<section class="purchase-page"><h1>Purchase history</h1><nav class="purchase-tabs" aria-label="Purchase history"><a href="{% url 'purchase-history' %}" aria-current="page">Purchases</a></nav>
 {% if orders %}<div class="purchase-list">{% for order in orders %}<article class="purchase-item"><div><span class="eyebrow">Order #{{ order.pk }}</span><h2>{% for course in order.course_objects.all %}<a href="{% url 'course-detail' course.pk %}">{{ course.title }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</h2><small>{{ order.created_date|date:'j F Y' }}</small></div><div class="purchase-total"><strong>&#8377;{{ order.total }}</strong><span class="badge">{% if order.total == 0 %}Free enrolment{% else %}Paid{% endif %}</span></div></article>{% endfor %}</div>
 {% else %}<div class="purchase-empty"><span class="empty-cart" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h3l3 12h11l3-9H6M8 19h.01M18 19h.01" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>You don't have any purchases.</p><a href="{% url 'index' %}">Explore courses</a></div>{% endif %}</section>{% endblock %}

@@ -38,4 +38,27 @@ admin.site.register(Module, ModuleAdmin)
 
 admin.site.register(InstructorProfile)
 
+from instructor.models import Assessment, Question, AssessmentAttempt
+
+
+class QuestionInline(admin.StackedInline):
+    model = Question
+    extra = 0
+
+
+@admin.register(Assessment)
+class AssessmentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'module', 'kind', 'weekly_sunday', 'opens_at', 'closes_at', 'published')
+    list_filter = ('kind', 'weekly_sunday', 'published')
+    inlines = [QuestionInline]
+
+
+@admin.register(AssessmentAttempt)
+class AssessmentAttemptAdmin(admin.ModelAdmin):
+    list_display = ('student', 'assessment', 'score', 'total', 'started_at', 'submitted_at', 'expired')
+    readonly_fields = ('assessment', 'student', 'score', 'total', 'started_at', 'submitted_at', 'expired', 'answers', 'question_snapshot')
+
+    def has_add_permission(self, request):
+        return False
+
 
